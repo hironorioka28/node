@@ -1,7 +1,7 @@
 {
   "name": "node",
   "version": "1.0.0",
-  "description": "node app",
+  "description": "## サーバー起動",
   "main": "app.js",
   "dependencies": {
     "socket.io": "^1.4.5"
@@ -15,7 +15,7 @@
     "url": "git+https://github.com/hironorioka28/node.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/hironorioka28/node/issues"
   },
