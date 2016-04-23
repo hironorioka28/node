@@ -14,21 +14,12 @@ app.use(express.static("public"));
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
-var template = fs.readFileSync(__dirname + "/index.ejs", "utf-8");
-
 app.get("/", routes.top);
 app.post("/create", routes.create);
 app.get("/:id([0-9]+)", routes.answer);
 app.get("/q/", routes.question);
 app.get("/q/:num([0-9]+)", routes.questions);
 app.get("/admin", routes.master);
-
-function handler(req, res) {
-  var data = ejs.render(template);
-  res.writeHead(200);
-  res.write(data);
-  res.end();
-}
 
 io.sockets.on("connection", function(socket) {
   socket.on("emit_from_top", function(data) {
