@@ -12,9 +12,9 @@ app.set("view engine", "ejs");
 var template = fs.readFileSync(__dirname + "/index.ejs", "utf-8");
 
 app.get("/", routes.top);
-app.get("/:id", routes.answer);
+app.get("/:id([0-9]+)", routes.answer);
 app.get("/q/", routes.question);
-app.get("/q/:num", routes.questions);
+app.get("/q/:num([0-9]+)", routes.questions);
 app.get("/admin", routes.master);
 
 function handler(req, res) {
