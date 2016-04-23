@@ -1,1 +1,13 @@
+<% include partials/header %>
 <h1>Master</h1>
+<ul id="users"></ul>
+<% include partials/scripts %>
+<script>
+  $(function() {
+    var socket = io.connect();
+    socket.on("emit_from_server", function(data) {
+      $("#users").append('<li>'+ data.uid + " : " + data.name +'</li>');
+    });
+  });
+</script>
+<% include partials/footer %>

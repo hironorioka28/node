@@ -31,16 +31,16 @@ function handler(req, res) {
 }
 
 io.sockets.on("connection", function(socket) {
-  socket.on("emit_from_client", function(data) {
-    socket.client_name = data.name;
+  socket.on("emit_from_answer", function(data) {
+    socket.user = data;
 
     // 自分含め全員
-    io.sockets.emit("emit_from_server", "[" + socket.client_name + "]" + data.msg);
+    io.sockets.emit("emit_from_server", socket.user);
 
     // 接続しているclientのみ
     //socket.emit("emit_from_server", "hello from server: " + data);
     // 自分以外
-    //socket.broadcast.emit("emit_from_server", "hello from server: " + data);
+    //socket.broadcast.emit("emit_from_server", socket.client_name);
   });
 });
 

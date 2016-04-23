@@ -1,22 +1,37 @@
-var users = [],
-    user_id = 0;
+var users = [];
 
 exports.top = function(req, res) {
   res.render("top");
 };
 exports.create = function(req, res) {
   var user = {
-    id: user_id,
-    name: req.body.hoge
+    uid: uid(),
+    name: req.body.user
   };
   users.push(user);
-  user_id++;
-  console.log(users);
-  res.redirect("/" + user.id);
+  res.redirect("/" + user.uid);
+
+  // ユニークなuidを生成
+  function uid() {
+    var random = Math.floor(Math.random() * 1000),
+        date = new Date(),
+        time = date.getTime();
+
+    return random + time.toString();
+  };
 };
 exports.answer = function(req, res) {
+  var user = "",
+      uid = 0;
+  for (var key in users) {
+    if (users[key].uid === req.params.id) {
+      user = users[key].name;
+      uid = users[key].uid;
+    }
+  }
   res.render("answer", {
-    users: users[req.params.id].name
+    user: user,
+    uid: uid
   });
 };
 exports.question = function(req, res) {

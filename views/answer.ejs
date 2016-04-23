@@ -1,3 +1,15 @@
 <% include partials/header %>
-<h1>ようこそ、<%= users %>さん</h1>
+<h1 id="user" data-user="<%= user %>">ようこそ、<%= user %>さん</h1>
+<p id="uid" data-uid="<%= uid %>">あなたのidは<%= uid %>でしょう。</p>
+<p>問題を待機中</p>
+<% include partials/scripts %>
+<script>
+  $(function() {
+    var socket = io.connect();
+    socket.json.emit("emit_from_answer", {
+      name: $("#user").data("user"),
+      uid: $("#uid").data("uid")
+    });
+  });
+</script>
 <% include partials/footer %>

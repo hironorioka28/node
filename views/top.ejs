@@ -2,8 +2,9 @@
 <h1>TOP</h1>
 <p>ようこそ</p>
 <p>名前を登録してね</p>
-<form method="post" action="/create">
-  <input type="text" name="hoge" placeholder="本名だと助かる">
+<form id="resist" method="post" action="/create">
+  <input id="userName" type="text" name="user" placeholder="本名だと助かる">
   <input type="submit" value="登録">
 </form>
+<% include partials/scripts %>
 <% include partials/footer %>
