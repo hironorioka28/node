@@ -1,6 +1,6 @@
 var app = require("express")(),
-    http = require("http").Server(app),
-    io = require("socket.io")(http),
+    server = require("http").Server(app),
+    io = require("socket.io")(server),
     fs = require("fs"),
     ejs = require("ejs"),
     routes = require("./routes/routes"),
@@ -38,5 +38,5 @@ io.sockets.on("connection", function(socket) {
   });
 });
 
-http.listen(port);
+server.listen(port);
 console.log("http server listening on %d", port);
