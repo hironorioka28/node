@@ -1,10 +1,15 @@
-var app = require("express")(),
+var express = require("express"),
+    app = express(),
     server = require("http").Server(app),
     io = require("socket.io")(server),
     fs = require("fs"),
     ejs = require("ejs"),
+    bodyParser = require("body-parser"),
     routes = require("./routes/routes"),
     port = process.env.PORT || 1337;
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static("public"));
 
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
@@ -12,6 +17,7 @@ app.set("view engine", "ejs");
 var template = fs.readFileSync(__dirname + "/index.ejs", "utf-8");
 
 app.get("/", routes.top);
+app.post("/create", routes.create);
 app.get("/:id([0-9]+)", routes.answer);
 app.get("/q/", routes.question);
 app.get("/q/:num([0-9]+)", routes.questions);

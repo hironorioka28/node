@@ -1,8 +1,23 @@
+var users = [],
+    user_id = 0;
+
 exports.top = function(req, res) {
   res.render("top");
 };
+exports.create = function(req, res) {
+  var user = {
+    id: user_id,
+    name: req.body.hoge
+  };
+  users.push(user);
+  user_id++;
+  console.log(users);
+  res.redirect("/" + user.id);
+};
 exports.answer = function(req, res) {
-  res.render("answer");
+  res.render("answer", {
+    users: users[req.params.id].name
+  });
 };
 exports.question = function(req, res) {
   res.render("question");
