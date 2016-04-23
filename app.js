@@ -1,21 +1,27 @@
-var app = require("http").createServer(handler),
-    io = require("socket.io").listen(app),
+var app = require("express")(),
+    http = require("http").Server(app),
+    io = require("socket.io")(http),
     fs = require("fs"),
+    ejs = require("ejs"),
+    routes = require("./routes/routes"),
     port = process.env.PORT || 1337;
 
-app.listen(port);
-console.log("http server listening on %d", port);
+app.set("views", __dirname + "/views");
+app.set("view engine", "ejs");
+
+var template = fs.readFileSync(__dirname + "/index.ejs", "utf-8");
+
+app.get("/", routes.top);
+app.get("/:id", routes.answer);
+app.get("/q/", routes.question);
+app.get("/q/:num", routes.questions);
+app.get("/admin", routes.master);
 
 function handler(req, res) {
-  fs.readFile(__dirname + "/index.html", function(err, data) {
-    if (err) {
-      res.writeHead(500);
-      return res.end("Error");
-    }
-    res.writeHead(200);
-    res.write(data);
-    res.end();
-  });
+  var data = ejs.render(template);
+  res.writeHead(200);
+  res.write(data);
+  res.end();
 }
 
 io.sockets.on("connection", function(socket) {
@@ -31,3 +37,6 @@ io.sockets.on("connection", function(socket) {
     //socket.broadcast.emit("emit_from_server", "hello from server: " + data);
   });
 });
+
+http.listen(port);
+console.log("http server listening on %d", port);

@@ -6,7 +6,11 @@
   "dependencies": {
     "socket.io": "^1.4.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "fs": "0.0.2"
+  },
   "scripts": {
     "start": "node app.js"
   }
