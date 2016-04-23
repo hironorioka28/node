@@ -31,7 +31,7 @@ function handler(req, res) {
 }
 
 io.sockets.on("connection", function(socket) {
-  socket.on("emit_from_answer", function(data) {
+  socket.on("emit_from_top", function(data) {
     socket.user = data;
 
     // 自分含め全員

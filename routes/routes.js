@@ -1,25 +1,22 @@
 var users = [];
 
+// top
 exports.top = function(req, res) {
   res.render("top");
 };
+
+// user登録
 exports.create = function(req, res) {
   var user = {
-    uid: uid(),
+    uid: req.body.uid,
     name: req.body.user
   };
   users.push(user);
   res.redirect("/" + user.uid);
 
-  // ユニークなuidを生成
-  function uid() {
-    var random = Math.floor(Math.random() * 1000),
-        date = new Date(),
-        time = date.getTime();
-
-    return random + time.toString();
-  };
 };
+
+// 回答者ページ
 exports.answer = function(req, res) {
   var user = "",
       uid = 0;
@@ -34,12 +31,18 @@ exports.answer = function(req, res) {
     uid: uid
   });
 };
+
+// 質問ページ
 exports.question = function(req, res) {
   res.render("question");
 };
+
+// 各問題
 exports.questions = function(req, res) {
   res.render("questions", {num: req.params.num});
 };
+
+// admin
 exports.master = function(req, res) {
   res.render("master");
 };

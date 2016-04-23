@@ -6,7 +6,7 @@
   $(function() {
     var socket = io.connect();
     socket.on("emit_from_server", function(data) {
-      $("#users").append('<li>'+ data.uid + " : " + data.name +'</li>');
+      $("#users").append('<li>'+ data.uid + " : " + data.user +'</li>');
     });
   });
 </script>
