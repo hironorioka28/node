@@ -1,12 +1,38 @@
 <% include partials/header %>
 <h1>Master</h1>
+<h2>Questions</h2>
+<ol>
+  <li id="q1" class="js-question">
+    <p>問題文問題文問題文問題文問題文問題文問題文問題文問題文問題文問題文問題文問題文問題文問題文問題文</p>
+    <button class="js-qOut" type="button">出題する</button>
+    <button type="button">回答OK</button>
+    <button type="button">回答STOP</button>
+    <button class="js-ans" type="button" data-answer="2">正解を発表</button>
+  </li>
+</ol>
 <ul id="users"></ul>
 <% include partials/scripts %>
 <script>
   $(function() {
     var socket = io.connect();
+
+    $(".js-question").each(function() {
+      var $area = $(this);
+      $area.find(".js-qOut").on("click", function() {
+        socket.emit("qOut_from_master", {
+          q: $area.find("p").text()
+        });
+      });
+      $area.find(".js-ans").on("click", function() {
+        socket.emit("ans_from_master", {
+          ans: $(this).data("answer")
+        });
+      });
+    });
+
+    // 参加者をリストする
     socket.on("emit_from_server", function(data) {
-      $("#users").append('<li>'+ data.uid + " : " + data.user +'</li>');
+      $("#users").append('<li>' + data.uid + " : " + data.user +'</li>');
     });
   });
 </script>

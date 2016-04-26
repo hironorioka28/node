@@ -33,6 +33,18 @@ io.sockets.on("connection", function(socket) {
     // 自分以外
     //socket.broadcast.emit("emit_from_server", socket.client_name);
   });
+
+
+  // masterからの出題
+  socket.on("qOut_from_master", function(data) {
+    socket.q = data;
+    socket.broadcast.emit("qOut_from_server", socket.q);
+  });
+  // masterからの正解発表
+  socket.on("ans_from_master", function(data) {
+    socket.ans = data;
+    socket.broadcast.emit("ans_from_server", socket.ans);
+  });
 });
 
 server.listen(port);

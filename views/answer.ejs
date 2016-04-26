@@ -1,6 +1,43 @@
 <% include partials/header %>
-<h1>ようこそ、<%= user %>さん</h1>
-<p>あなたのidは<%= uid %>でしょう。</p>
-<p>問題を待機中</p>
+<% if (user) { %>
+  <h1>ようこそ、<%= user %>さん</h1>
+  <p>問題を待機中</p>
+<% } else { %>
+  <p>Error</p>
+  <a href="/">TOP</a>
+<% } %>
+<p>正しいと思う選択肢を選んでね</p>
+<p class="waitAns" style="display:none">正解発表まで少しお待ち下さい...</p>
+<p id="tOrF"></p>
+<ul>
+  <li><label><input type="radio" name="q1" value="1">1</label></li>
+  <li><label><input type="radio" name="q1" value="2">2</label></li>
+  <li><label><input type="radio" name="q1" value="3">3</label></li>
+  <li><label><input type="radio" name="q1" value="4">4</label></li>
+</ul>
+
 <% include partials/scripts %>
+<script>
+  $(function() {
+    var socket = io.connect(),
+        yourAns = "";
+
+    $("li").each(function() {
+      $(this).on("touchend", function() {
+        $(this).find("input").prop("checked", true);
+        yourAns = $("input:radio[name='q1']:checked").val();
+        $(".waitAns").show();
+      });
+    });
+
+    socket.on("ans_from_server", function(data) {
+    console.log(data.ans);
+      if (yourAns == data.ans) {
+        $("#tOrF").text("正解！");
+      } else {
+        $("#tOrF").text("不正解...");
+      }
+    });
+  });
+</script>
 <% include partials/footer %>
