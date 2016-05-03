@@ -17,7 +17,7 @@ app.set("view engine", "ejs");
 app.get("/", routes.top);
 app.post("/create", routes.create);
 app.get("/:id([0-9]+)", routes.answer);
-app.get("/q/", routes.question);
+app.get("/q/", routes.qIndex);
 app.get("/q/:num([0-9]+)", routes.questions);
 app.get("/admin", routes.master);
 

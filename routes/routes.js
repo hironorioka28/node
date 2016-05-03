@@ -36,9 +36,9 @@ exports.answer = function(req, res) {
 };
 
 // 質問ページ
-exports.question = function(req, res) {
-  res.render("question", {
-    title: "question"
+exports.qIndex = function(req, res) {
+  res.render("qIndex", {
+    title: "index of question"
   });
 };
 
