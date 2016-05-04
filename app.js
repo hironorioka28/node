@@ -18,7 +18,7 @@ app.get("/", routes.top);
 app.post("/create", routes.create);
 app.get("/:id([0-9]+)", routes.answer);
 app.get("/q/", routes.qIndex);
-app.get("/q/:num([0-9]+)", routes.questions);
+app.get("/q/:num([0-9]+)", routes.question);
 app.get("/admin", routes.master);
 
 io.sockets.on("connection", function(socket) {
@@ -34,17 +34,16 @@ io.sockets.on("connection", function(socket) {
     //socket.broadcast.emit("emit_from_server", socket.client_name);
   });
 
+  socket.on("q1Selection", function(data) {
+    io.sockets.emit("showSelection_from_server", data);
+  });
+  socket.on("q1Answer", function(data) {
+    io.sockets.emit("showAnswer_from_server", data);
+  });
+  socket.on("q1PlayVideo", function(data) {
+    io.sockets.emit("playVideo_from_server", data);
+  });
 
-  // masterからの出題
-  socket.on("qOut_from_master", function(data) {
-    socket.q = data;
-    socket.broadcast.emit("qOut_from_server", socket.q);
-  });
-  // masterからの正解発表
-  socket.on("ans_from_master", function(data) {
-    socket.ans = data;
-    socket.broadcast.emit("ans_from_server", socket.ans);
-  });
 });
 
 server.listen(port);

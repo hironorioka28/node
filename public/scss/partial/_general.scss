@@ -1,10 +1,44 @@
 @import url(https://fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic);
 
+$white-l: #fff;
+$white-m: #fafafa;
+$white-d: #f0f0f0;
+
+$gray-l: #ddd;
+$gray-m: #aaa;
+$gray-d: #777;
+
+$black-l: #555;
+$black-m: #333;
+$black-d: #000;
+
 html {
   box-sizing: border-box;
+  font-size: 62.5%;
 }
 
 body {
   font-family: Ubuntu, 'Helvetica Neue', YuGothic, '游ゴシック', 'Heragino Sans', 'メイリオ', sans-serif;
-  font-size: 62.5%;
+}
+
+button {
+  display: block;
+  -webkit-appearance: none;
+  border: 1px solid $gray-m;
+  border-radius: 4px;
+  background-color: $white-l;
+  padding: 12px;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  &:hover {
+    opacity: .8;
+  }
+}
+
+a {
+  text-decoration: none;
+  &:hover {
+    opacity: .8;
+  }
 }

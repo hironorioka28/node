@@ -35,7 +35,7 @@ exports.answer = function(req, res) {
   });
 };
 
-// 質問ページ
+// 質問インデックス
 exports.qIndex = function(req, res) {
   res.render("qIndex", {
     title: "index of question"
@@ -43,10 +43,10 @@ exports.qIndex = function(req, res) {
 };
 
 // 各問題
-exports.questions = function(req, res) {
+exports.question = function(req, res) {
   var qNo = req.params.num;
 
-  res.render("questions", {
+  res.render("q/" + qNo, {
     title: "Q" + qNo,
     num: parseInt(qNo)
   });

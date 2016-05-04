@@ -1,7 +1,153 @@
-//@import "partial/reset";
+@import "partial/reset";
 @import "partial/general";
 
-// temporary
-body {
-  font-size: 2.0rem;
+.container {
+  padding: 40px;
+  width: calc(100% - 80px);
+  &--q {
+    margin: 0 40px;
+    background: rgba($white-l, .8);
+    border-radius: 24px;
+  }
+  &__title {
+    margin-bottom: 20px;
+    font-size: 3rem;
+  }
+  &__question {
+    font-size: 6rem;
+    line-height: 1.4;
+    text-align: justify;
+    &--forSelection {
+      margin-bottom: 16px;
+      font-size: 2.4rem;
+    }
+  }
+  &__table {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+  }
+  &__video {
+    width: 100%;
+  }
+}
+
+.master {
+  &__qArea {
+    margin-bottom: 20px;
+  }
+}
+
+.question {
+  &__wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    &:nth-child(1) {
+      background-color: $white-l;
+    }
+    &:nth-child(2) {
+      background-color: $white-m;
+    }
+    &--q {
+      background: {
+        repeat: no-repeat;
+        size: cover;
+        attachment: fixed;
+      }
+    }
+  }
+}
+
+.qList {
+  counter-reset: question;
+  &__item {
+    padding: 16px 0;
+    position: relative;
+    border-bottom: 1px solid $white-d;
+    &::after {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      counter-increment: question;
+      content: counter(question);
+      font-size: 6rem;
+      color: $gray-l;
+      z-index: -1;
+    }
+  }
+  &__question {
+    margin-bottom: 16px;
+    font-size: 1.4rem;
+  }
+  &__buttons {
+  }
+}
+
+.qButtonList {
+  display: -webkit-flex;
+  display: flex;
+  &__item {
+    margin-right: 20px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.selectionTable {
+  width: 80%;
+  &__row {
+    &:nth-child(1) {
+      .selectionTable__data {
+        &:nth-child(1) {
+          &::before {
+            content: "A";
+          }
+        }
+        &:nth-child(2) {
+          &::before {
+            content: "B";
+          }
+        }
+      }
+    }
+    &:nth-child(2) {
+      .selectionTable__data {
+        &:nth-child(1) {
+          &::before {
+            content: "C";
+          }
+        }
+        &:nth-child(2) {
+          &::before {
+            content: "D";
+          }
+        }
+      }
+    }
+  }
+  &__data {
+    position: relative;
+    padding-top: 30.9%;
+    border: 8px solid transparent;
+    background: {
+      repeat: no-repeat;
+      size: cover;
+      position: center top;
+    }
+    &::before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      font-size: 10rem;
+      opacity: .8;
+      text-shadow: 0 0 8px $white-l;
+    }
+  }
 }
