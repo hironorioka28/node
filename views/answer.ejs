@@ -50,6 +50,8 @@
 <script>
   $(function() {
     var socket = io.connect(),
+        startTime = 0,
+        answerTime = 0,
         yourAns = "",
         $jsCheckAns = $("#js-checkAns"),
         isShowSelection = false,
@@ -78,6 +80,7 @@
       $(this).find("input").prop("checked", true);
       yourAns = $("input:radio[name='q1']:checked").val();
       if (confirm(yourAns + "でよろしいですね？")) {
+        answerTime = new Date().getTime();
         $(this).closest("td").addClass("selected");
         clickShield();
         localStorage.setItem("answeredFlg", true);
@@ -88,6 +91,7 @@
     });
 
     socket.on("showSelection_from_server", function(data) {
+      startTime = data.time;
       $jsCheckAns.show();
       $("#js-waitQuestion").hide();
       localStorage.setItem("isShowSelection", true);
@@ -100,6 +104,11 @@
 
     socket.on("finalAnswer_from_server", function(data) {
       if (yourAns === data) {
+        var time = answerTime - startTime;
+        socket.json.emit("rankingData_from_answer", {
+          "time": time,
+          "name": "<%= user %>"
+        });
         $("#js-tOrF").addClass("t").text("○");
         localStorage.clear();
         setTimeout(function() {

@@ -30,17 +30,29 @@
       <video id="js-playVideo" class="container__video" src="/img/v/q1Ans.m4v"></video>
     </div>
   </section>
+  <section id="js-ranking" class="question__wrapper">
+    <div class="container">
+      <h1 class="container__title">上位入賞者</h1>
+      <div class="container__rankingList">
+        <ol id="js-rankingList" class="rankingList"></ol>
+      </div>
+    </div>
+  </section>
 </div><!-- /.question -->
 <% include ../partials/scripts %>
 <script>
   $(function() {
     var socket = io.connect();
 
+    // 選択肢の表示・回答スタート
     socket.on("showSelection_from_server", function(data) {
       var speed = 400,
-          position = $("#" + data).offset().top;
+          position = $("#js-selection").offset().top;
+
       $("body").animate({scrollTop: position}, speed, "swing");
     });
+
+    // 正解VTR
     socket.on("playVideo_from_server", function(data) {
       var $video = $("#js-playVideo"),
           speed = 400,
@@ -56,6 +68,43 @@
       $video.on("ended", function() {
         $("#js-answer").find(".container").append('<p class="js-showAnswer">正解は<span>' + data + '</span></p>');
         socket.emit("q1FinalAnswer", data);
+      });
+    });
+
+    // ランキング表示
+    socket.on("rankingData_from_server", function(data) {
+      $("#js-rankingList").append('<li class="rankingList__item"><div class="rankingList__innerWrapper" data-ranktime="' + data.time + '"><p class="rankingList__name">' + data.name + '</p><p class="rankingList__time">' + (data.time / 1000) + ' sec</p></div></li>');
+    });
+
+    socket.on("ranking_from_server", function(data) {
+      var $rankingLi = $("#js-rankingList").find("li"),
+          speed = 400,
+          position = $("#js-ranking").offset().top,
+          sortList = [],
+          i = 0;
+
+      $rankingLi.each(function() {
+        sortList.push($(this).html());
+      });
+      sortList.sort(function(a, b) {
+        return parseInt($(a).data("ranktime")) < parseInt($(b).data("ranktime")) ? -1 : 1;
+      });
+      $rankingLi.empty();
+      $rankingLi.each(function() {
+        $(this).append(sortList[i]);
+        i++;
+      });
+
+      $rankingLi.find("p").hide();
+
+      $("body").animate({scrollTop: position}, speed, "swing");
+
+      $($rankingLi.get().reverse()).each(function(index) {
+        if (index < 7) {
+          $(this).find("p").delay(500 * index).fadeIn();
+        } else {
+          $(this).find("p").delay(1000 * index).fadeIn();
+        }
       });
     });
   });

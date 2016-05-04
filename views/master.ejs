@@ -16,13 +16,16 @@
                   <button id="q1Selection" class="qButtonList__button" type="button">選択肢表示</button>
                 </li>
                 <li class="qButtonList__item">
-                  <button class="qButtonList__button" type="button">回答OK</button>
+                  <button class="qButtonList__button" type="button">回答START</button>
                 </li>
                 <li class="qButtonList__item">
                   <button id="q1StopAnswer" class="qButtonList__button" type="button">回答STOP</button>
                 </li>
                 <li class="qButtonList__item">
                   <button id="q1PlayVideo" class="qButtonList__button" type="button" data-answer="B">正解VTR再生</button>
+                </li>
+                <li class="qButtonList__item">
+                  <button id="q1Ranking" class="qButtonList__button" type="button">ランキング発表</button>
                 </li>
               </ul>
             </div>
@@ -166,13 +169,20 @@
     var socket = io.connect();
 
     $("#q1Selection").on("click", function() {
-      socket.emit("q1Selection", "js-selection");
+      var startTime = new Date().getTime();
+
+      socket.json.emit("q1Selection", {
+        "time": startTime
+      });
     });
     $("#q1StopAnswer").on("click", function() {
       socket.emit("q1StopAnswer", "");
     });
     $("#q1PlayVideo").on("click", function() {
       socket.emit("q1PlayVideo", $(this).data("answer"));
+    });
+    $("#q1Ranking").on("click", function() {
+      socket.emit("q1Ranking", "");
     });
 
     // 参加者をリストする

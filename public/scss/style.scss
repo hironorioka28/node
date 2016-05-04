@@ -222,6 +222,57 @@
   }
 }
 
+.rankingList {
+  counter-reset: ranking;
+  &__item {
+    padding: 20px 20px 20px 100px;
+    position: relative;
+    height: 40px;
+    &:nth-child(even) {
+      background-color: rgba($blue, .1);
+    }
+    &::before {
+      display: block;
+      position: absolute;
+      counter-increment: ranking;
+      content: counter(ranking);
+      font-size: 4rem;
+      top: 50%;
+      left: 20px;
+      margin-top: -20px;
+    }
+    &:nth-child(1) {
+      &::before {
+        color: $gold;
+      }
+    }
+    &:nth-child(2) {
+      &::before {
+        color: $silver;
+      }
+    }
+    &:nth-child(3) {
+      &::before {
+        color: $bronze;
+      }
+    }
+  }
+  &__innerWrapper {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-align-items: center;
+    align-items: center;
+  }
+  &__name {
+    font-size: 4rem;
+  }
+  &__time {
+    font-size: 3rem;
+  }
+}
+
 .js-checkAns {
   display: none;
   position: relative;

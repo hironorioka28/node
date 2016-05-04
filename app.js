@@ -46,6 +46,13 @@ io.sockets.on("connection", function(socket) {
   socket.on("q1FinalAnswer", function(data) {
     io.sockets.emit("finalAnswer_from_server", data);
   });
+  socket.on("q1Ranking", function(data) {
+    io.sockets.emit("ranking_from_server", data);
+  });
+
+  socket.on("rankingData_from_answer", function(data) {
+    io.sockets.emit("rankingData_from_server", data);
+  });
 
   socket.on("revive", function(data) {
     io.sockets.emit("revive_from_server", data);
