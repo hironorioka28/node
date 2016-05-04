@@ -46,6 +46,10 @@
           speed = 400,
           position = $("#js-answer").offset().top;
 
+      if ($(".js-showAnswer").length) {
+        $(".js-showAnswer").remove();
+      };
+
       $("body").animate({scrollTop: position}, speed, "swing");
 
       $video.get(0).play();

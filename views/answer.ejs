@@ -71,7 +71,7 @@
     }
 
     if (localStorage.getItem("looser")) {
-      $("body").append('<div class="js-looserShield">残念・・次のタームまでお待ち下さい</div>');
+      looserShield();
     }
 
     $jsCheckAns.find("label").on("touchend", function() {
@@ -108,7 +108,7 @@
       } else {
         $("#js-tOrF").addClass("f").text("×");
         localStorage.setItem("looser", true);
-        $("body").append('<div class="js-looserShield">残念・・次のタームまでお待ち下さい</div>');
+        looserShield();
       }
     });
 
@@ -136,6 +136,12 @@
     function clickShield() {
       $jsCheckAns.append('<div class="clickShield"></div>');
     };
+
+    function looserShield() {
+      if (! $(".js-looserShield").length) {
+        $("body").append('<div class="js-looserShield">残念・・次のタームまでお待ち下さい</div>');
+      }
+    }
   });
 </script>
 <% include partials/footer %>
