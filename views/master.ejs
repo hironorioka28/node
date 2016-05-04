@@ -3,6 +3,9 @@
   <section class="master__qArea">
     <div class="container">
       <h1 class="container__title">Questions</h1>
+      <div class="container__button">
+        <button id="js-revive" type="button">復活のボタン</button>
+      </div>
       <div class="container__qList">
         <ol class="qList">
           <li id="q1" class="qList__item js-question">
@@ -16,16 +19,10 @@
                   <button class="qButtonList__button" type="button">回答OK</button>
                 </li>
                 <li class="qButtonList__item">
-                  <button class="qButtonList__button" type="button">回答STOP</button>
+                  <button id="q1StopAnswer" class="qButtonList__button" type="button">回答STOP</button>
                 </li>
                 <li class="qButtonList__item">
-                  <button id="q1Answer" class="qButtonList__button" type="button">正解ページ表示</button>
-                </li>
-                <li class="qButtonList__item">
-                  <button id="q1PlayVideo" class="qButtonList__button" type="button">正解VTR再生</button>
-                </li>
-                <li class="qButtonList__item">
-                  <button class="qButtonList__button" type="button" data-answer="2">正解を発表</button>
+                  <button id="q1PlayVideo" class="qButtonList__button" type="button" data-answer="B">正解VTR再生</button>
                 </li>
               </ul>
             </div>
@@ -171,16 +168,21 @@
     $("#q1Selection").on("click", function() {
       socket.emit("q1Selection", "js-selection");
     });
-    $("#q1Answer").on("click", function() {
-      socket.emit("q1Answer", "js-answer");
+    $("#q1StopAnswer").on("click", function() {
+      socket.emit("q1StopAnswer", "");
     });
     $("#q1PlayVideo").on("click", function() {
-      socket.emit("q1PlayVideo", "js-playVideo");
+      socket.emit("q1PlayVideo", $(this).data("answer"));
     });
 
     // 参加者をリストする
     socket.on("emit_from_server", function(data) {
       $("#users").append('<li>' + data.uid + " : " + data.user +'</li>');
+    });
+
+    // 復活のボタン
+    $("#js-revive").on("click", function() {
+      socket.emit("revive", "");
     });
   });
 </script>

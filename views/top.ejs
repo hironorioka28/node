@@ -1,12 +1,19 @@
 <% include partials/header %>
-<h1>TOP</h1>
-<p>ようこそ</p>
-<p>名前を登録してね</p>
-<form id="resist" method="post" action="/create">
-  <input id="userName" type="text" name="user" placeholder="本名だと助かる">
-  <input id="uid" type="hidden" name="uid">
-  <input type="submit" value="登録">
-</form>
+<div class="top">
+  <section class="top__resist">
+    <div class="container">
+      <h1 class="container__title container__title--top">YONNIE's Question</h1>
+      <div class="container__resistArea">
+        <form id="resist" class="resistArea" method="post" action="/create">
+          <p class="resistArea__description">お名前を本名で登録してください。</p>
+          <input id="userName" class="resistArea__textForm" type="text" name="user" placeholder="米家一洋">
+          <input id="uid" type="hidden" name="uid">
+          <input class="resistArea__submit" type="submit" value="登録">
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
 <% include partials/scripts %>
 <script>
   $(function() {

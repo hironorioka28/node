@@ -2,8 +2,9 @@
 @import "partial/general";
 
 .container {
-  padding: 40px;
-  width: calc(100% - 80px);
+  padding: 20px;
+  width: calc(100% - 40px);
+  position: relative;
   &--q {
     margin: 0 40px;
     background: rgba($white-l, .8);
@@ -12,6 +13,9 @@
   &__title {
     margin-bottom: 20px;
     font-size: 3rem;
+    &--top {
+      text-align: center;
+    }
   }
   &__question {
     font-size: 6rem;
@@ -27,6 +31,7 @@
     display: flex;
     -webkit-justify-content: center;
     justify-content: center;
+    position: relative;
   }
   &__video {
     width: 100%;
@@ -101,6 +106,9 @@
 
 .selectionTable {
   width: 80%;
+  &--answerArea {
+    width: 100%;
+  }
   &__row {
     &:nth-child(1) {
       .selectionTable__data {
@@ -149,5 +157,135 @@
       opacity: .8;
       text-shadow: 0 0 8px $white-l;
     }
+    &--answerArea {
+      padding-top: 0;
+      height: 120px;
+      border: 1px solid $gray-l;
+      &::before {
+        font-size: 8rem;
+        top: 50%;
+        left: 50%;
+        margin: -40px 0 0 -26px;
+        z-index: -1;
+      }
+    }
   }
+  &__label {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  &__radio {
+    display: none;
+  }
+}
+
+.resistArea {
+  &__description {
+    margin-bottom: 16px;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+  &__textForm {
+    width: calc(100% - 16px);
+    margin-bottom: 16px;
+    padding: 8px;
+    border: 1px solid $gray-l;
+    border-radius: 4px;
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+  &__submit {
+    width: 100%;
+  }
+}
+
+.waitQuestionArea {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  margin: 0 auto;
+  background: {
+    repeat: no-repeat;
+    size: cover;
+    position: center top;
+  }
+  &__description {
+    color: $white-l;
+    font-size: 1.2rem;
+  }
+}
+
+.js-checkAns {
+  display: none;
+  position: relative;
+  .selected {
+    &::before {
+      color: $red;
+    }
+  }
+  .clickShield {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba($white-l, .3);
+  }
+}
+
+.js-tOrF {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -100px 0 0 -100px;
+  font-size: 20rem;
+  line-height: 1;
+  &.t {
+    color: $blue;
+  }
+  &.f {
+    color: $red;
+    margin: -150px 0 0 -85px;
+    font-size: 30rem;
+  }
+}
+
+.js-showAnswer {
+  position: absolute;
+  font-size: 10rem;
+  top: 100px;
+  left: 50%;
+  margin-left: -276px;
+  text-shadow: 0 0 40px $white-l;
+  span {
+    font-size: 40rem;
+  }
+}
+
+.js-looserShield {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba($black-d, .4);
+  color: $white-l;
+  font-size: 1.4rem;
+}
+
+.js-revivalCountdown {
+  font-size: 20rem;
 }

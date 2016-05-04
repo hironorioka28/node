@@ -37,11 +37,18 @@ io.sockets.on("connection", function(socket) {
   socket.on("q1Selection", function(data) {
     io.sockets.emit("showSelection_from_server", data);
   });
-  socket.on("q1Answer", function(data) {
-    io.sockets.emit("showAnswer_from_server", data);
+  socket.on("q1StopAnswer", function(data) {
+    io.sockets.emit("stopAnswer_from_server", data);
   });
   socket.on("q1PlayVideo", function(data) {
     io.sockets.emit("playVideo_from_server", data);
+  });
+  socket.on("q1FinalAnswer", function(data) {
+    io.sockets.emit("finalAnswer_from_server", data);
+  });
+
+  socket.on("revive", function(data) {
+    io.sockets.emit("revive_from_server", data);
   });
 
 });

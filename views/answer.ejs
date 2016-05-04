@@ -1,43 +1,141 @@
 <% include partials/header %>
-<% if (user) { %>
-  <h1>ようこそ、<%= user %>さん</h1>
-  <p>問題を待機中</p>
-<% } else { %>
-  <p>Error</p>
-  <a href="/">TOP</a>
-<% } %>
-<p>正しいと思う選択肢を選んでね</p>
-<p class="waitAns" style="display:none">正解発表まで少しお待ち下さい...</p>
-<p id="tOrF"></p>
-<ul>
-  <li><label><input type="radio" name="q1" value="1">1</label></li>
-  <li><label><input type="radio" name="q1" value="2">2</label></li>
-  <li><label><input type="radio" name="q1" value="3">3</label></li>
-  <li><label><input type="radio" name="q1" value="4">4</label></li>
-</ul>
+<div class="answer">
+  <section class="answer__answerArea">
+    <div class="container">
+      <h1 class="container__title"><%= user %>さん</h1>
+      <div class="container__answerArea">
+        <% if (user) { %>
+          <div id="js-waitQuestion" class="waitQuestionArea" style="background-image:url(/img/loading.gif)">
+            <p class="waitQuestionArea__description">問題を待機中</p>
+          </div>
+        <% } else { %>
+          <div class="waitQuestionArea">
+            <p>Error</p>
+            <a href="/">TOP</a>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </section>
+  <section class="container__selectionList">
+    <div class="container">
+      <div class="container__table">
+        <table id="js-checkAns" class="selectionTable selectionTable--answerArea js-checkAns">
+          <tbody class="selectionTable__tbody">
+            <tr class="selectionTable__row">
+              <td id="ans-A" class="selectionTable__data selectionTable__data--answerArea">
+                <label class="selectionTable__label"><input class="selectionTable__radio" type="radio" name="q1" value="A"></label>
+              </td>
+              <td id="ans-B" class="selectionTable__data selectionTable__data--answerArea">
+                <label class="selectionTable__label"><input class="selectionTable__radio" type="radio" name="q1" value="B"></label>
+              </td>
+            </tr>
+            <tr class="selectionTable__row">
+              <td id="ans-C" class="selectionTable__data selectionTable__data--answerArea">
+                <label class="selectionTable__label"><input class="selectionTable__radio" type="radio" name="q1" value="C"></label>
+              </td>
+              <td id="ans-D" class="selectionTable__data selectionTable__data--answerArea">
+                <label class="selectionTable__label"><input class="selectionTable__radio" type="radio" name="q1" value="D"></label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p id="js-tOrF" class="js-tOrF"></p>
+      </div>
+    </div>
+  </section>
+</div>
 
 <% include partials/scripts %>
 <script>
   $(function() {
     var socket = io.connect(),
-        yourAns = "";
+        yourAns = "",
+        $jsCheckAns = $("#js-checkAns"),
+        isShowSelection = false,
+        answeredFlg = false,
+        looser = false;
 
-    $("li").each(function() {
-      $(this).on("touchend", function() {
-        $(this).find("input").prop("checked", true);
-        yourAns = $("input:radio[name='q1']:checked").val();
-        $(".waitAns").show();
-      });
+    if (localStorage.getItem("isShowSelection")) {
+      $jsCheckAns.show();
+      $("#js-waitQuestion").hide();
+    }
+
+    if (localStorage.getItem("answeredFlg")) {
+      clickShield();
+    }
+
+    if ("undefined" !== typeof localStorage.getItem("yourAns")) {
+      $("#ans-" + localStorage.getItem("yourAns")).addClass("selected");
+
+    }
+
+    if (localStorage.getItem("looser")) {
+      $("body").append('<div class="js-looserShield">残念・・次のタームまでお待ち下さい</div>');
+    }
+
+    $jsCheckAns.find("label").on("touchend", function() {
+      $(this).find("input").prop("checked", true);
+      yourAns = $("input:radio[name='q1']:checked").val();
+      if (confirm(yourAns + "でよろしいですね？")) {
+        $(this).closest("td").addClass("selected");
+        clickShield();
+        localStorage.setItem("answeredFlg", true);
+        localStorage.setItem("yourAns", yourAns);
+      } else {
+        return;
+      };
     });
 
-    socket.on("ans_from_server", function(data) {
-    console.log(data.ans);
-      if (yourAns == data.ans) {
-        $("#tOrF").text("正解！");
+    socket.on("showSelection_from_server", function(data) {
+      $jsCheckAns.show();
+      $("#js-waitQuestion").hide();
+      localStorage.setItem("isShowSelection", true);
+    });
+
+    socket.on("stopAnswer_from_server", function(data) {
+      clickShield();
+      localStorage.setItem("answeredFlg", true);
+    });
+
+    socket.on("finalAnswer_from_server", function(data) {
+      if (yourAns === data) {
+        $("#js-tOrF").addClass("t").text("○");
+        localStorage.clear();
+        setTimeout(function() {
+          location.reload();
+        }, 5000);
       } else {
-        $("#tOrF").text("不正解...");
+        $("#js-tOrF").addClass("f").text("×");
+        localStorage.setItem("looser", true);
+        $("body").append('<div class="js-looserShield">残念・・次のタームまでお待ち下さい</div>');
       }
     });
+
+    socket.on("revive_from_server", function(data) {
+      if (localStorage.getItem("looser")) {
+        $(".js-looserShield").text("復活まで");
+        $(".js-looserShield").append('<p id="js-revivalCountdown" class="js-revivalCountdown"></p>');
+        regeneration(5);
+
+        function regeneration(counter) {
+          if (counter > 0) {
+            $("#js-revivalCountdown").text(counter);
+            counter--;
+            setTimeout(function() {
+              regeneration(counter);
+            }, 1000);
+          } else {
+            localStorage.clear();
+            location.reload();
+          }
+        };
+      }
+    });
+
+    function clickShield() {
+      $jsCheckAns.append('<div class="clickShield"></div>');
+    };
   });
 </script>
 <% include partials/footer %>

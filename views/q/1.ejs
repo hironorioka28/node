@@ -41,16 +41,17 @@
           position = $("#" + data).offset().top;
       $("body").animate({scrollTop: position}, speed, "swing");
     });
-    socket.on("showAnswer_from_server", function(data) {
-      var speed = 400,
-          position = $("#" + data).offset().top;
-      $("body").animate({scrollTop: position}, speed, "swing");
-    });
     socket.on("playVideo_from_server", function(data) {
-      var $video = $("#" + data);
+      var $video = $("#js-playVideo"),
+          speed = 400,
+          position = $("#js-answer").offset().top;
+
+      $("body").animate({scrollTop: position}, speed, "swing");
+
       $video.get(0).play();
       $video.on("ended", function() {
-        alert("終了!");
+        $("#js-answer").find(".container").append('<p class="js-showAnswer">正解は<span>' + data + '</span></p>');
+        socket.emit("q1FinalAnswer", data);
       });
     });
   });

@@ -12,6 +12,9 @@ $black-l: #555;
 $black-m: #333;
 $black-d: #000;
 
+$red: #850006;
+$blue: #060085;
+
 html {
   box-sizing: border-box;
   font-size: 62.5%;
@@ -21,7 +24,8 @@ body {
   font-family: Ubuntu, 'Helvetica Neue', YuGothic, '游ゴシック', 'Heragino Sans', 'メイリオ', sans-serif;
 }
 
-button {
+button,
+input[type=submit] {
   display: block;
   -webkit-appearance: none;
   border: 1px solid $gray-m;
