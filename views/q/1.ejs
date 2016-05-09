@@ -32,7 +32,6 @@
   </section>
   <section id="js-ranking" class="question__wrapper">
     <div class="container">
-      <h1 class="container__title">上位入賞者</h1>
       <div class="container__rankingList">
         <ol id="js-rankingList" class="rankingList"></ol>
       </div>
@@ -71,33 +70,43 @@
       });
     });
 
-    // ランキング表示
+    // ランキングデータをセット
     socket.on("rankingData_from_server", function(data) {
       $("#js-rankingList").append('<li class="rankingList__item"><div class="rankingList__innerWrapper" data-ranktime="' + data.time + '"><p class="rankingList__name">' + data.name + '</p><p class="rankingList__time">' + (data.time / 1000) + ' sec</p></div></li>');
     });
 
     socket.on("ranking_from_server", function(data) {
-      var $rankingLi = $("#js-rankingList").find("li"),
+      var $rankingLiTmp = $("#js-rankingList").find("li"),
           speed = 400,
           position = $("#js-ranking").offset().top,
           sortList = [],
           i = 0;
 
-      $rankingLi.each(function() {
+      $rankingLiTmp.find("p").hide();
+
+      $("body").animate({scrollTop: position}, speed, "swing");
+
+      $rankingLiTmp.each(function() {
         sortList.push($(this).html());
       });
+
       sortList.sort(function(a, b) {
         return parseInt($(a).data("ranktime")) < parseInt($(b).data("ranktime")) ? -1 : 1;
       });
-      $rankingLi.empty();
-      $rankingLi.each(function() {
-        $(this).append(sortList[i]);
-        i++;
+
+      $rankingLiTmp.empty();
+
+      $rankingLiTmp.each(function() {
+        if (i < 10) {
+          $(this).append(sortList[i]);
+          i++;
+        } else {
+          $(this).remove();
+        }
       });
 
-      $rankingLi.find("p").hide();
+      var $rankingLi = $("#js-rankingList").find("li");
 
-      $("body").animate({scrollTop: position}, speed, "swing");
 
       $($rankingLi.get().reverse()).each(function(index) {
         if (index < 7) {

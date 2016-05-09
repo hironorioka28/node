@@ -18,11 +18,10 @@
     }
   }
   &__question {
-    font-size: 4rem;
+    font-size: 3.6rem;
     line-height: 1.4;
     text-align: justify;
     &--forSelection {
-      margin-bottom: 16px;
       font-size: 2.4rem;
     }
   }
@@ -51,10 +50,10 @@
     display: flex;
     -webkit-align-items: center;
     align-items: center;
-    &:nth-child(1) {
+    &:nth-child(odd) {
       background-color: $white-l;
     }
-    &:nth-child(2) {
+    &:nth-child(even) {
       background-color: $white-m;
     }
     &--q {
@@ -115,11 +114,13 @@
         &:nth-child(1) {
           &::before {
             content: "A";
+            color: $red;
           }
         }
         &:nth-child(2) {
           &::before {
             content: "B";
+            color: $blue;
           }
         }
       }
@@ -129,11 +130,13 @@
         &:nth-child(1) {
           &::before {
             content: "C";
+            color: $green;
           }
         }
         &:nth-child(2) {
           &::before {
             content: "D";
+            color: $yellow;
           }
         }
       }
@@ -224,36 +227,55 @@
 
 .rankingList {
   counter-reset: ranking;
+  height: 36px * 7 + 56px * 3;
+  overflow: hidden;
   &__item {
-    padding: 20px 20px 20px 100px;
+    padding: 12px 20px 12px 60px;
     position: relative;
-    height: 40px;
+    height: 32px;
     &:nth-child(even) {
       background-color: rgba($blue, .1);
+    }
+    &:nth-child(1) {
+      background-color: $gold;
+    }
+    &:nth-child(2) {
+      background-color: $silver;
+    }
+    &:nth-child(3) {
+      background-color: $bronze;
     }
     &::before {
       display: block;
       position: absolute;
       counter-increment: ranking;
       content: counter(ranking);
-      font-size: 4rem;
+      font-size: 3rem;
       top: 50%;
       left: 20px;
-      margin-top: -20px;
+      margin-top: -15px;
     }
-    &:nth-child(1) {
+    &:nth-child(-n+3) {
+      .rankingList__name,
+      .rankingList__time {
+        color: $white-l;
+      }
       &::before {
-        color: $gold;
+        color: $white-l;
       }
     }
-    &:nth-child(2) {
+    &:nth-child(n+4) {
+      padding: 8px 20px 8px 60px;
+      height: 20px;
       &::before {
-        color: $silver;
+        font-size: 2rem;
+        margin-top: -10px;
       }
-    }
-    &:nth-child(3) {
-      &::before {
-        color: $bronze;
+      .rankingList__name {
+        font-size: 2rem;
+      }
+      .rankingList__time {
+        font-size: 1.4rem;
       }
     }
   }
@@ -266,19 +288,58 @@
     align-items: center;
   }
   &__name {
-    font-size: 4rem;
+    display: none;
+    font-size: 3rem;
   }
   &__time {
-    font-size: 3rem;
+    display: none;
+    font-size: 2.4rem;
   }
 }
 
 .js-checkAns {
   display: none;
   position: relative;
-  .selected {
-    &::before {
-      color: $red;
+  .selectionTable__row {
+    .selectionTable__data {
+      &.selected {
+        &::before {
+          color: $white-l;
+          z-index: 1;
+        }
+      }
+    }
+    &:nth-child(1) {
+      .selectionTable__data {
+        &.selected {
+          &:nth-child(1) {
+            background-color: $red;
+            &::before {
+            }
+          }
+          &:nth-child(2) {
+            background-color: $blue;
+            &::before {
+            }
+          }
+        }
+      }
+    }
+    &:nth-child(2) {
+      .selectionTable__data {
+        &.selected {
+          &:nth-child(1) {
+            background-color: $green;
+            &::before {
+            }
+          }
+          &:nth-child(2) {
+            background-color: $yellow;
+            &::before {
+            }
+          }
+        }
+      }
     }
   }
   .clickShield {
@@ -298,6 +359,7 @@
   margin: -100px 0 0 -100px;
   font-size: 20rem;
   line-height: 1;
+  z-index: 2;
   &.t {
     color: $blue;
   }
@@ -335,6 +397,7 @@
   background-color: rgba($black-d, .4);
   color: $white-l;
   font-size: 1.4rem;
+  z-index: 100;
 }
 
 .js-revivalCountdown {
