@@ -43,6 +43,34 @@
   }
 }
 
+.qIndex {
+}
+
+.qIndexList {
+  display: -webkit-flex;
+  display: flex;
+  &__item {
+    margin-right: 20px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+  &__link {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid $gray-m;
+    border-radius: 4px;
+    font-size: 3rem;
+    color: $gray-d;
+  }
+}
+
 .question {
   &__wrapper {
     width: 100vw;
@@ -61,6 +89,7 @@
         repeat: no-repeat;
         size: cover;
         attachment: fixed;
+        position: center top;
       }
     }
   }

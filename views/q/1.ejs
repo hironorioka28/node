@@ -1,14 +1,14 @@
 <% include ../partials/header %>
 <div class="question">
-  <section class="question__wrapper question__wrapper--q" style="background-image:url(/img/qbg/q1bg.jpg)">
+  <section class="question__wrapper question__wrapper--q" style="background-image:url(/img/qbg/q<%= num %>bg.jpg)">
     <div class="container container--q">
       <h1 id="js-question" class="container__title">第<%= num %>問</h1>
-      <p class="container__question">新郎・新婦、それぞれの名前を漢字で書いたとき、正しいものはどれか？</p>
+      <p class="container__question"><%= question %></p>
     </div>
   </section>
   <section id="js-selection" class="question__wrapper">
     <div class="container">
-      <p class="container__question container__question--forSelection">新郎・新婦、それぞれの名前を漢字で書いたとき、正しいものはどれか？</p>
+      <p class="container__question container__question--forSelection"><%= question %></p>
       <div class="container__table">
         <table class="selectionTable">
           <tbody class="selectionTable__tbody">
@@ -44,7 +44,7 @@
     var socket = io.connect();
 
     // 選択肢の表示・回答スタート
-    socket.on("showSelection_from_server", function(data) {
+    socket.on("q<%= num %>Selection", function(data) {
       var speed = 400,
           position = $("#js-selection").offset().top;
 
@@ -52,7 +52,7 @@
     });
 
     // 正解VTR
-    socket.on("playVideo_from_server", function(data) {
+    socket.on("q<%= num %>PlayVideo", function(data) {
       var $video = $("#js-playVideo"),
           speed = 400,
           position = $("#js-answer").offset().top;
@@ -66,7 +66,10 @@
       $video.get(0).play();
       $video.on("ended", function() {
         $("#js-answer").find(".container").append('<p class="js-showAnswer">正解は<span>' + data + '</span></p>');
-        socket.emit("q1FinalAnswer", data);
+        socket.json.emit("q<%= num %>FinalAnswer", {
+          "socketKey": "q<%= num %>FinalAnswer",
+          "answer": data
+        });
       });
     });
 
@@ -75,7 +78,7 @@
       $("#js-rankingList").append('<li class="rankingList__item"><div class="rankingList__innerWrapper" data-ranktime="' + data.time + '"><p class="rankingList__name">' + data.name + '</p><p class="rankingList__time">' + (data.time / 1000) + ' sec</p></div></li>');
     });
 
-    socket.on("ranking_from_server", function(data) {
+    socket.on("q<%= num %>Ranking", function(data) {
       var $rankingLiTmp = $("#js-rankingList").find("li"),
           speed = 400,
           position = $("#js-ranking").offset().top,

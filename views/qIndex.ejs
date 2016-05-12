@@ -1,8 +1,14 @@
 <% include partials/header %>
-<h1>Question</h1>
-<ul>
-  <% for (i = 0; i < 10; i++) { %>
-    <li><a href="/q/<%= i + 1 %>"><%= i + 1 %></a></li>
-  <% } %>
-</ul>
+<div class="qIndex">
+  <section class="qIndex__wrapper">
+    <div class="container">
+      <h1 class="container__title">Question</h1>
+      <div class="container__qIndex">
+      <ul class="qIndexList">
+        <% for (i = 0; i < 10; i++) { %>
+          <li class="qIndexList__item"><a class="qIndexList__link" href="/q/<%= i + 1 %>"><%= i + 1 %></a></li> <% } %>
+      </ul>
+    </div>
+  </section>
+</div>
 <% include partials/footer %>

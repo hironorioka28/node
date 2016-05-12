@@ -33,27 +33,30 @@ io.sockets.on("connection", function(socket) {
     // 自分以外
     //socket.broadcast.emit("emit_from_server", socket.client_name);
   });
-
-  socket.on("q1Selection", function(data) {
-    io.sockets.emit("showSelection_from_server", data);
-  });
-  socket.on("q1StopAnswer", function(data) {
-    io.sockets.emit("stopAnswer_from_server", data);
-  });
-  socket.on("q1PlayVideo", function(data) {
-    io.sockets.emit("playVideo_from_server", data);
-  });
-  socket.on("q1FinalAnswer", function(data) {
-    io.sockets.emit("finalAnswer_from_server", data);
-  });
-  socket.on("q1Ranking", function(data) {
-    io.sockets.emit("ranking_from_server", data);
-  });
+  for (var i = 0; i < 7; i++) {
+    socket.on("q" + (i + 1) + "Selection", function(data) {
+      console.log(data);
+      io.sockets.emit(data.socketKey, data.time);
+    });
+    socket.on("q" + (i + 1) + "StopAnswer", function(data) {
+      io.sockets.emit(data, data);
+    });
+    socket.on("q" + (i + 1) + "PlayVideo", function(data) {
+      io.sockets.emit(data.socketKey, data.answer);
+    });
+    socket.on("q" + (i + 1) + "FinalAnswer", function(data) {
+      io.sockets.emit(data.socketKey, data.answer);
+    });
+    socket.on("q" + (i + 1) + "Ranking", function(data) {
+      io.sockets.emit(data, data);
+    });
+  }
 
   socket.on("rankingData_from_answer", function(data) {
     io.sockets.emit("rankingData_from_server", data);
   });
 
+  // 復活のボタン
   socket.on("revive", function(data) {
     io.sockets.emit("revive_from_server", data);
   });

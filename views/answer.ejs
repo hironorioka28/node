@@ -58,27 +58,34 @@
         answeredFlg = false,
         looser = false;
 
+    // 選択肢表示状態を維持
     if (localStorage.getItem("isShowSelection")) {
       $jsCheckAns.show();
       $("#js-waitQuestion").hide();
     }
 
+    // 回答後のclickShield状態を維持
     if (localStorage.getItem("answeredFlg")) {
       clickShield();
     }
 
+    // 選択された状態を維持
     if ("undefined" !== typeof localStorage.getItem("yourAns")) {
       $("#ans-" + localStorage.getItem("yourAns")).addClass("selected");
 
     }
 
+    // 敗退者の状態を維持
     if (localStorage.getItem("looser")) {
       looserShield();
     }
 
+    // 正解かどうかチェック
     $jsCheckAns.find("label").on("touchend", function() {
       $(this).find("input").prop("checked", true);
+
       yourAns = $("input:radio[name='q1']:checked").val();
+
       if (confirm(yourAns + "でよろしいですね？")) {
         answerTime = new Date().getTime();
         $(this).closest("td").addClass("selected");
@@ -90,36 +97,40 @@
       };
     });
 
-    socket.on("showSelection_from_server", function(data) {
-      startTime = data.time;
-      $jsCheckAns.show();
-      $("#js-waitQuestion").hide();
-      localStorage.setItem("isShowSelection", true);
-    });
+    for (var i = 0; i < 7; i++) {
+      socket.on("q" + (i + 1) + "Selection", function(data) {
+        startTime = data;
+        console.log(startTime);
+        $jsCheckAns.show();
+        $("#js-waitQuestion").hide();
+        localStorage.setItem("isShowSelection", true);
+      });
+
+      socket.on("q" + (i + 1) + "FinalAnswer", function(data) {
+        if (yourAns === data) {
+          var time = answerTime - startTime;
+          socket.json.emit("rankingData_from_answer", {
+            "time": time,
+            "name": "<%= user %>"
+          });
+          $("#js-tOrF").addClass("t").text("○");
+          localStorage.clear();
+          setTimeout(function() {
+            location.reload();
+          }, 5000);
+        } else {
+          $("#js-tOrF").addClass("f").text("×");
+          localStorage.setItem("looser", true);
+          looserShield();
+        }
+      });
+    }
 
     socket.on("stopAnswer_from_server", function(data) {
       clickShield();
       localStorage.setItem("answeredFlg", true);
     });
 
-    socket.on("finalAnswer_from_server", function(data) {
-      if (yourAns === data) {
-        var time = answerTime - startTime;
-        socket.json.emit("rankingData_from_answer", {
-          "time": time,
-          "name": "<%= user %>"
-        });
-        $("#js-tOrF").addClass("t").text("○");
-        localStorage.clear();
-        setTimeout(function() {
-          location.reload();
-        }, 5000);
-      } else {
-        $("#js-tOrF").addClass("f").text("×");
-        localStorage.setItem("looser", true);
-        looserShield();
-      }
-    });
 
     socket.on("revive_from_server", function(data) {
       if (localStorage.getItem("looser")) {
