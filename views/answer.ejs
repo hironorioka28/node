@@ -100,7 +100,6 @@
     for (var i = 0; i < 7; i++) {
       socket.on("q" + (i + 1) + "Selection", function(data) {
         startTime = data;
-        console.log(startTime);
         $jsCheckAns.show();
         $("#js-waitQuestion").hide();
         localStorage.setItem("isShowSelection", true);

@@ -35,7 +35,6 @@ io.sockets.on("connection", function(socket) {
   });
   for (var i = 0; i < 7; i++) {
     socket.on("q" + (i + 1) + "Selection", function(data) {
-      console.log(data);
       io.sockets.emit(data.socketKey, data.time);
     });
     socket.on("q" + (i + 1) + "StopAnswer", function(data) {
