@@ -10,9 +10,13 @@
         <ol class="qList">
           <% for (var i = 0; i < 7; i++) { %>
             <li id="q<%= i + 1 %>" class="qList__item js-question">
+              <p class="qList__question"><%= questions[i].qx %></p>
               <p class="qList__question"><%= questions[i].q %></p>
               <div class="qList__buttons">
                 <ul class="qButtonList">
+                  <li class="qButtonList__item">
+                    <button id="q<%= i + 1 %>PreQuestion" class="qButtonList__button" type="button">問題文表示</button>
+                  </li>
                   <li class="qButtonList__item">
                     <button id="q<%= i + 1 %>Selection" class="qButtonList__button" type="button">選択肢表示</button>
                   </li>
@@ -48,6 +52,12 @@
     var socket = io.connect();
 
     for (var i = 0; i < 7; i++) {
+      // 問題文を表示させる
+      $("#q" + (i + 1) + "PreQuestion").on("click", function() {
+        var thisId = $(this).attr("id");
+
+        socket.emit(thisId, thisId);
+      });
 
       // 選択肢を表示させる
       $("#q" + (i + 1) + "Selection").on("click", function() {

@@ -2,7 +2,13 @@
 <div class="question">
   <section class="question__wrapper question__wrapper--q" style="background-image:url(/img/qbg/q<%= num %>bg.jpg)">
     <div class="container container--q">
-      <h1 id="js-question" class="container__title">第<%= num %>問</h1>
+      <h1 class="container__title">第<%= num %>問</h1>
+      <p class="container__question"><%= preQuestion %></p>
+    </div>
+  </section>
+  <section id="js-preQuestion" class="question__wrapper question__wrapper--q" style="background-image:url(/img/qbg/q<%= num %>bg.jpg)">
+    <div class="container container--q">
+      <h1 class="container__title">問題</h1>
       <p class="container__question"><%= question %></p>
     </div>
   </section>
@@ -13,12 +19,12 @@
         <table class="selectionTable">
           <tbody class="selectionTable__tbody">
             <tr class="selectionTable__row">
-              <td class="selectionTable__data" style="background-image:url(http://stevejobko.com/wp-content/uploads/2014/12/%E5%B0%8F%E5%B6%8B.jpg)"></td>
-              <td class="selectionTable__data" style="background-image:url(https://pbs.twimg.com/profile_images/439341459590750208/3bHeJS0h.jpeg)"></td>
+              <td class="selectionTable__data" style="background-image:url(/img/selections/<%= num %>/A.jpg)"></td>
+              <td class="selectionTable__data" style="background-image:url(/img/selections/<%= num %>/B.jpg)"></td>
             </tr>
             <tr class="selectionTable__row">
-              <td class="selectionTable__data" style="background-image:url(http://images6.fanpop.com/image/photos/38300000/-kojima-haruna-38335508-1024-1267.jpg)"></td>
-              <td class="selectionTable__data" style="background-image:url(http://images6.fanpop.com/image/photos/38300000/-kojima-haruna-38335313-1024-1265.jpg)"></td>
+              <td class="selectionTable__data" style="background-image:url(/img/selections/<%= num %>/C.jpg)"></td>
+              <td class="selectionTable__data" style="background-image:url(/img/selections/<%= num %>/D.jpg)"></td>
             </tr>
           </tbody>
         </table>
@@ -42,6 +48,14 @@
 <script>
   $(function() {
     var socket = io.connect();
+
+    // 問題文の表示
+    socket.on("q<%= num %>PreQuestion", function(data) {
+      var speed = 400,
+          position = $("#js-preQuestion").offset().top;
+
+      $("body").animate({scrollTop: position}, speed, "swing");
+    });
 
     // 選択肢の表示・回答スタート
     socket.on("q<%= num %>Selection", function(data) {

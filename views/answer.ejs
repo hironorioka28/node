@@ -123,12 +123,13 @@
           looserShield();
         }
       });
+
+      socket.on("q" + (i + 1) + "StopAnswer", function(data) {
+        clickShield();
+        localStorage.setItem("answeredFlg", true);
+      });
     }
 
-    socket.on("stopAnswer_from_server", function(data) {
-      clickShield();
-      localStorage.setItem("answeredFlg", true);
-    });
 
 
     socket.on("revive_from_server", function(data) {

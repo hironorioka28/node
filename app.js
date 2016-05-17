@@ -34,6 +34,9 @@ io.sockets.on("connection", function(socket) {
     //socket.broadcast.emit("emit_from_server", socket.client_name);
   });
   for (var i = 0; i < 7; i++) {
+    socket.on("q" + (i + 1) + "PreQuestion", function(data) {
+      io.sockets.emit(data, data);
+    });
     socket.on("q" + (i + 1) + "Selection", function(data) {
       io.sockets.emit(data.socketKey, data.time);
     });
