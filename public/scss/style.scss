@@ -15,6 +15,7 @@
     font-size: 3rem;
     &--top {
       text-align: center;
+      font-size: 2.8rem;
     }
   }
   &__question {
@@ -246,6 +247,8 @@
   align-items: center;
   -webkit-justify-content: center;
   justify-content: center;
+  -webkit-flex-direction: column;
+  flex-direction: column;
   width: 160px;
   height: 160px;
   border-radius: 50%;
@@ -258,6 +261,14 @@
   &__description {
     color: $white-l;
     font-size: 1.2rem;
+  }
+  &__errorMsg {
+    margin-bottom: 12px;
+    font-size: 1.4rem;
+  }
+  &__link {
+    display: block;
+    font-size: 1.4rem;
   }
 }
 
