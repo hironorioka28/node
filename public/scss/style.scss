@@ -86,7 +86,7 @@
     -webkit-align-items: center;
     align-items: center;
     &:nth-child(odd) {
-      background-color: $white-l;
+      background-color: $white-d;
     }
     &:nth-child(even) {
       background-color: $white-m;
@@ -196,7 +196,7 @@
       position: absolute;
       top: 8px;
       left: 8px;
-      font-size: 10rem;
+      font-size: 6rem;
       opacity: .8;
       text-shadow: 0 0 8px $white-l;
     }
