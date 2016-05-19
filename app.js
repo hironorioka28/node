@@ -54,6 +54,23 @@ io.sockets.on("connection", function(socket) {
     });
   }
 
+  // qX
+  socket.on("qXPreQuestion", function(data) {
+    io.sockets.emit(data, data);
+  });
+  socket.on("qXSelection", function(data) {
+    io.sockets.emit(data.socketKey, data.time);
+  });
+  socket.on("qXAnswer", function(data) {
+    io.sockets.emit("qXAnswer", data);
+  });
+  socket.on("qXFinalAnswer", function(data) {
+    io.sockets.emit("qXFinalAnswer", data);
+  });
+  socket.on("qXRanking", function(data) {
+    io.sockets.emit(data, data);
+  });
+
   socket.on("rankingData_from_answer", function(data) {
     io.sockets.emit("rankingData_from_server", data);
   });

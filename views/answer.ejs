@@ -131,26 +131,62 @@
     }
 
 
+    // qX
+    socket.on("qXSelection", function(data) {
+      startTime = data;
+      $jsCheckAns.show();
+      $("#js-waitQuestion").hide();
+      localStorage.setItem("isShowSelection", true);
+    });
 
-    socket.on("revive_from_server", function(data) {
-      if (localStorage.getItem("looser")) {
-        $(".js-looserShield").text("復活まで");
-        $(".js-looserShield").append('<p id="js-revivalCountdown" class="js-revivalCountdown"></p>');
-        regeneration(5);
-
-        function regeneration(counter) {
-          if (counter > 0) {
-            $("#js-revivalCountdown").text(counter);
-            counter--;
-            setTimeout(function() {
-              regeneration(counter);
-            }, 1000);
-          } else {
-            localStorage.clear();
-            location.reload();
-          }
-        };
+    socket.on("qXFinalAnswer", function(data) {
+      if (yourAns === data) {
+        var time = answerTime - startTime;
+        socket.json.emit("rankingData_from_answer", {
+          "time": time,
+          "name": "<%= user %>"
+        });
+        $("#js-tOrF").addClass("t").text("○");
+        localStorage.clear();
+        setTimeout(function() {
+          location.reload();
+        }, 5000);
+      } else {
+        $("#js-tOrF").addClass("f").text("×");
+        localStorage.setItem("looser", true);
+        looserShield();
       }
+    });
+
+    socket.on("qXStopAnswer", function(data) {
+      clickShield();
+      localStorage.setItem("answeredFlg", true);
+    });
+
+
+
+    // 復活の狼煙
+    socket.on("revive_from_server", function(data) {
+      if (! localStorage.getItem("looser")) {
+        $("body").append('<div class="js-looserShield"></div>');
+      }
+
+      $(".js-looserShield").text("復活まで");
+      $(".js-looserShield").append('<p id="js-revivalCountdown" class="js-revivalCountdown"></p>');
+      regeneration(5);
+
+      function regeneration(counter) {
+        if (counter > 0) {
+          $("#js-revivalCountdown").text(counter);
+          counter--;
+          setTimeout(function() {
+            regeneration(counter);
+          }, 1000);
+        } else {
+          localStorage.clear();
+          location.reload();
+        }
+      };
     });
 
     function clickShield() {

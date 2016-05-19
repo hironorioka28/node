@@ -33,6 +33,38 @@
               </div>
             </li>
           <% } %>
+          <li id="qX" class="qList__item qList__item--x js-question">
+            <p class="qList__question">トイレットペーパー速巻き対決！！</p>
+            <p class="qList__question">1位になるのは次の4組のうち、どこでしょう？</p>
+              <div class="qList__buttons">
+                <ul class="qButtonList">
+                  <li class="qButtonList__item">
+                    <button id="qXPreQuestion" class="qButtonList__button" type="button">問題文表示</button>
+                  </li>
+                  <li class="qButtonList__item">
+                    <button id="qXSelection" class="qButtonList__button" type="button">選択肢表示</button>
+                  </li>
+                  <li class="qButtonList__item">
+                    <button id="qXStopAnswer" class="qButtonList__button js-setAnswer" type="button">回答STOP</button>
+                  </li>
+                  <li class="qButtonList__item">
+                    <button class="qButtonList__button js-setAnswer">A</button>
+                  </li>
+                  <li class="qButtonList__item">
+                    <button class="qButtonList__button js-setAnswer">B</button>
+                  </li>
+                  <li class="qButtonList__item">
+                    <button class="qButtonList__button js-setAnswer">C</button>
+                  </li>
+                  <li class="qButtonList__item">
+                    <button class="qButtonList__button js-setAnswer">D</button>
+                  </li>
+                  <li class="qButtonList__item">
+                    <button id="qXRanking" class="qButtonList__button" type="button">ランキング発表</button>
+                  </li>
+                </ul>
+              </div>
+          </li>
         </ol>
       </div><!-- /.container__qList -->
     </div><!-- /.container -->
@@ -94,6 +126,35 @@
         socket.emit(thisId, thisId);
       });
     }
+
+    // qX
+    // 問題文
+    $("#qXPreQuestion").on("click", function() {
+      var thisId = $(this).attr("id");
+
+      socket.emit(thisId, thisId);
+    });
+    // 選択肢を表示させる
+    $("#qXSelection").on("click", function() {
+      var thisId = $(this).attr("id"),
+          startTime = new Date().getTime();
+
+      socket.json.emit(thisId, {
+        "socketKey": thisId,
+        "time": startTime
+      });
+    });
+    $(".js-setAnswer").each(function(index) {
+      var map = ["A", "B", "C", "D"];
+      $(this).on("click", function() {
+        socket.emit("qXAnswer", map[index - 1]);
+      });
+    });
+    $("#qXRanking").on("click", function() {
+      var thisId = $(this).attr("id");
+
+      socket.emit(thisId, thisId);
+    });
 
     // 参加者をリストする
     socket.on("emit_from_server", function(data) {

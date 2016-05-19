@@ -36,6 +36,12 @@
   &__video {
     width: 100%;
   }
+  &__XAnswer {
+    font-size: 10rem;
+  }
+  &__XWinner {
+    font-size: 40rem;
+  }
 }
 
 .master {
@@ -112,6 +118,9 @@
       font-size: 6rem;
       color: $gray-l;
       z-index: -1;
+    }
+    &--x {
+      background-color: rgba($red, .1);
     }
   }
   &__question {
