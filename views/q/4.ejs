@@ -126,11 +126,7 @@
 
 
       $($rankingLi.get().reverse()).each(function(index) {
-        if (index < 7) {
-          $(this).find("p").delay(500 * index).fadeIn();
-        } else {
-          $(this).find("p").delay(1000 * index).fadeIn();
-        }
+        $(this).find("p").delay(2000 * index).fadeIn();
       });
     });
   });

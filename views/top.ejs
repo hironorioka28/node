@@ -1,5 +1,5 @@
 <% include partials/header %>
-<div class="top">
+<div id="js-bg" class="top">
   <section class="top__resist">
     <div class="container">
       <h1 class="container__title container__title--top">YONNIE's<br> オールスターウォーズ<br>感謝祭</h1>
@@ -49,6 +49,12 @@
 
       return random + time.toString();
     };
+
+    var bgUrl = "/img/abg/bg" + (Math.floor(Math.random() * 10) + 1) + ".jpg";
+
+    $("#js-bg").css({
+      "background-image": "url(" + bgUrl + ")"
+    });
   });
 </script>
 <% include partials/footer %>

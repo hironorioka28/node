@@ -1,5 +1,5 @@
 <% include partials/header %>
-<div class="answer">
+<div id="js-bg" class="answer">
   <section class="answer__answerArea">
     <div class="container">
       <h1 class="container__title"><%= user %>さん</h1>
@@ -48,6 +48,15 @@
 
 <% include partials/scripts %>
 <script>
+  $(function() {
+    // ランダム背景画像
+    var bgUrl = "/img/abg/bg" + (Math.floor(Math.random() * 10) + 1) + ".jpg";
+
+    $("#js-bg").css({
+      "background-image": "url(" + bgUrl + ")"
+    });
+  });
+
   $(function() {
     var socket = io.connect(),
         startTime = 0,
