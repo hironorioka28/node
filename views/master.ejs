@@ -45,7 +45,7 @@
                     <button id="qXSelection" class="qButtonList__button" type="button">選択肢表示</button>
                   </li>
                   <li class="qButtonList__item">
-                    <button id="qXStopAnswer" class="qButtonList__button js-setAnswer" type="button">回答STOP</button>
+                    <button id="qXStopAnswer" class="qButtonList__button" type="button">回答STOP</button>
                   </li>
                   <li class="qButtonList__item">
                     <button class="qButtonList__button js-setAnswer">A</button>
@@ -144,10 +144,17 @@
         "time": startTime
       });
     });
+    // 強制的に回答をSTOP
+    $("#qXStopAnswer").on("click", function() {
+      var thisId = $(this).attr("id");
+
+      socket.emit(thisId, thisId);
+    });
+    // 正解を送る
     $(".js-setAnswer").each(function(index) {
       var map = ["A", "B", "C", "D"];
       $(this).on("click", function() {
-        socket.emit("qXAnswer", map[index - 1]);
+        socket.emit("qXAnswer", map[index]);
       });
     });
     $("#qXRanking").on("click", function() {

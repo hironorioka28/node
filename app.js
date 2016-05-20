@@ -61,11 +61,18 @@ io.sockets.on("connection", function(socket) {
   socket.on("qXSelection", function(data) {
     io.sockets.emit(data.socketKey, data.time);
   });
+  socket.on("qXStopAnswer", function(data) {
+    io.sockets.emit(data, data);
+  });
   socket.on("qXAnswer", function(data) {
     io.sockets.emit("qXAnswer", data);
   });
   socket.on("qXFinalAnswer", function(data) {
-    io.sockets.emit("qXFinalAnswer", data);
+    if (data !== null) {
+      io.sockets.emit("qXFinalAnswer", data);
+    } else {
+      console.log("Error null of data");
+    }
   });
   socket.on("qXRanking", function(data) {
     io.sockets.emit(data, data);

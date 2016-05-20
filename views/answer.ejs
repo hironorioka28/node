@@ -152,6 +152,9 @@
     });
 
     socket.on("qXFinalAnswer", function(data) {
+      if (localStorage.getItem("looser")) {
+        return;
+      }
       if (yourAns === data) {
         var time = answerTime - startTime;
         socket.json.emit("rankingData_from_answer", {
